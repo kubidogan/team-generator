@@ -1,15 +1,13 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import PlayerCard from "./components/PlayerCard";
+import PlayerWrapper from "./components/PlayerWrapper";
+import TeamGenerator from "./components/TeamGenerator";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1 className="btn btn-primary">Team Generator</h1>
-        <button className="btn btn-primary">Button</button>
-      </header>
-      <PlayerCard />
+      <h1>Team Generator</h1>
+      <TeamGenerator />
     </div>
   );
 }
