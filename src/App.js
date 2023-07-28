@@ -1,6 +1,7 @@
+import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import PlayerWrapper from "./components/PlayerWrapper";
+
 import TeamGenerator from "./components/TeamGenerator";
 
 function App() {

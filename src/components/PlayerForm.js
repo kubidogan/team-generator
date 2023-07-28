@@ -1,56 +1,91 @@
-import React, { useState } from "react";
+import React from "react";
 
-const PlayerForm = ({ addPlayer }) => {
-  const [playerName, setPlayerName] = useState("");
-  const [playerPosition, setPlayerPosition] = useState("");
-  const [playerImage, setPlayerImage] = useState(null);
-
-  const handleNameChange = (event) => {
-    setPlayerName(event.target.value);
+const PlayerForm = ({
+  playerData,
+  setPlayerData,
+  addPlayer,
+  generateTeams,
+}) => {
+  const handleNameChange = (id, value) => {
+    setPlayerData((prevData) => {
+      const newPlayerData = prevData.map((player) =>
+        player.id === id ? { ...player, name: value } : player
+      );
+      return newPlayerData;
+    });
   };
 
-  const handlePositionChange = (event) => {
-    setPlayerPosition(event.target.value);
+  const handlePositionChange = (id, value) => {
+    setPlayerData((prevData) => {
+      const newPlayerData = prevData.map((player) =>
+        player.id === id ? { ...player, position: value } : player
+      );
+      return newPlayerData;
+    });
   };
 
-  const handleImageChange = (event) => {
+  const handleImageChange = (id, event) => {
     const file = event.target.files[0];
-    setPlayerImage(file);
+    setPlayerData((prevData) => {
+      const newPlayerData = prevData.map((player) =>
+        player.id === id ? { ...player, image: file } : player
+      );
+      return newPlayerData;
+    });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const newPlayer = {
-      name: playerName,
-      position: playerPosition,
-      image: playerImage,
-    };
-    addPlayer(newPlayer); // Call the addPlayer function from the parent component
-    setPlayerName("");
-    setPlayerPosition("");
-    setPlayerImage(null);
+
+    // Filter out players with empty names
+    const newPlayers = playerData.filter((player) => player.name.trim() !== "");
+
+    addPlayer(newPlayers); // Call the addPlayer function from the parent component
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <label>
-          Player Name:
-          <input type="text" value={playerName} onChange={handleNameChange} />
-        </label>
-        <label>
-          Player Position:
-          <input
-            type="text"
-            value={playerPosition}
-            onChange={handlePositionChange}
-          />
-        </label>
-        <label>
-          Player Image:
-          <input type="file" onChange={handleImageChange} />
-        </label>
-        <button type="submit">Add Player</button>
+        {playerData.map((player) => (
+          <div key={player.id}>
+            <label>
+              Player Name:
+              <input
+                type="text"
+                value={player.name}
+                onChange={(e) => handleNameChange(player.id, e.target.value)}
+              />
+            </label>
+            <label>
+              Player Position:
+              <input
+                type="text"
+                value={player.position}
+                onChange={(e) =>
+                  handlePositionChange(player.id, e.target.value)
+                }
+              />
+            </label>
+            <label>
+              Player Image:
+              <input
+                type="file"
+                onChange={(e) => handleImageChange(player.id, e)}
+              />
+            </label>
+            {player.image && (
+              <img
+                src={URL.createObjectURL(player.image)}
+                alt={player.name}
+                style={{ width: "100px", height: "100px" }}
+              />
+            )}
+          </div>
+        ))}
+        <button type="submit">Add Players</button>
+        <button type="button" onClick={generateTeams}>
+          Generate Teams
+        </button>
       </form>
     </div>
   );

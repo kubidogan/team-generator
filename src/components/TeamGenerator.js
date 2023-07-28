@@ -8,8 +8,8 @@ const TeamGenerator = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState(null);
 
-  const addPlayer = (newPlayer) => {
-    setPlayers([...players, newPlayer]);
+  const addPlayer = (newPlayers) => {
+    setPlayers([...players, ...newPlayers]);
   };
 
   const updatePlayer = (playerId, updatedData) => {
@@ -36,9 +36,32 @@ const TeamGenerator = () => {
     setIsEditModalOpen(false);
   };
 
+  const generateTeams = () => {
+    if (players.length !== 14) {
+      alert("Please enter 14 players before generating teams.");
+      return;
+    }
+
+    // Shuffle the players array to randomize the order
+    const shuffledPlayers = players.sort(() => Math.random() - 0.5);
+
+    // Divide the shuffled players array into two teams
+    const team1 = shuffledPlayers.slice(0, 7);
+    const team2 = shuffledPlayers.slice(7, 14);
+
+    // Display the teams in the console (you can modify this to display on the screen)
+    console.log("Team 1:", team1);
+    console.log("Team 2:", team2);
+  };
+
   return (
     <div>
-      <PlayerForm addPlayer={addPlayer} />
+      <PlayerForm
+        playerData={players}
+        setPlayerData={setPlayers}
+        addPlayer={addPlayer}
+        generateTeams={generateTeams}
+      />
 
       <div>
         {players.map((player) => (
