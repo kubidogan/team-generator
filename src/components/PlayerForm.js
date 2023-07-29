@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const PlayerForm = ({
   playerData,
@@ -6,6 +6,12 @@ const PlayerForm = ({
   addPlayer,
   generateTeams,
 }) => {
+  const [localPlayerData, setLocalPlayerData] = useState([]);
+
+  useEffect(() => {
+    setLocalPlayerData(playerData);
+  }, [playerData]);
+
   const handleNameChange = (id, value) => {
     setPlayerData((prevData) => {
       const newPlayerData = prevData.map((player) =>
@@ -38,7 +44,9 @@ const PlayerForm = ({
     event.preventDefault();
 
     // Filter out players with empty names
-    const newPlayers = playerData.filter((player) => player.name.trim() !== "");
+    const newPlayers = localPlayerData.filter(
+      (player) => player.name.trim() !== ""
+    );
 
     addPlayer(newPlayers); // Call the addPlayer function from the parent component
   };
@@ -46,7 +54,7 @@ const PlayerForm = ({
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        {playerData.map((player) => (
+        {localPlayerData.map((player) => (
           <div key={player.id}>
             <label>
               Player Name:
