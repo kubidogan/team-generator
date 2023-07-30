@@ -1,87 +1,49 @@
 import React, { useState } from "react";
-import PlayerForm from "./PlayerForm";
-import PlayerCard from "./PlayerCard";
-import PlayerEditModal from "./PlayerEditModal";
+import PlayerForm, { playersData } from "./PlayerForm";
 
 const TeamGenerator = () => {
-  const [players, setPlayers] = useState([]);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const [team1, setTeam1] = useState([]);
+  const [team2, setTeam2] = useState([]);
 
-  const addPlayer = (newPlayers) => {
-    setPlayers([...players, ...newPlayers]);
-  };
+  const handleGenerateTeams = (selectedPlayers) => {
+    if (selectedPlayers.length === 14) {
+      // Shuffle the selectedPlayers array to randomize the order
+      const shuffledPlayers = selectedPlayers.sort(() => Math.random() - 0.5);
 
-  const updatePlayer = (playerId, updatedData) => {
-    setPlayers((prevPlayers) =>
-      prevPlayers.map((player) =>
-        player.id === playerId ? { ...player, ...updatedData } : player
-      )
-    );
-  };
-
-  const deletePlayer = (playerId) => {
-    setPlayers((prevPlayers) =>
-      prevPlayers.filter((player) => player.id !== playerId)
-    );
-  };
-
-  const handleEditClick = (player) => {
-    setSelectedPlayer(player);
-    setIsEditModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedPlayer(null);
-    setIsEditModalOpen(false);
-  };
-
-  const generateTeams = () => {
-    if (players.length !== 14) {
-      alert("Please enter 14 players before generating teams.");
-      return;
+      // Divide the shuffled players array into two teams
+      const teamSize = Math.ceil(shuffledPlayers.length / 2);
+      setTeam1(shuffledPlayers.slice(0, teamSize));
+      setTeam2(shuffledPlayers.slice(teamSize));
+    } else {
+      alert("Please select exactly 14 players to generate teams.");
     }
-
-    // Shuffle the players array to randomize the order
-    const shuffledPlayers = players.sort(() => Math.random() - 0.5);
-
-    // Divide the shuffled players array into two teams
-    const team1 = shuffledPlayers.slice(0, 7);
-    const team2 = shuffledPlayers.slice(7, 14);
-
-    // Display the teams in the console (you can modify this to display on the screen)
-    console.log("Team 1:", team1);
-    console.log("Team 2:", team2);
   };
 
   return (
     <div>
-      <PlayerForm
-        playerData={players}
-        setPlayerData={setPlayers}
-        addPlayer={addPlayer}
-        generateTeams={generateTeams}
-      />
+      <PlayerForm onPlayerSelect={handleGenerateTeams} />
 
       <div>
-        {players.map((player) => (
-          <PlayerCard
-            key={player.id}
-            player={player}
-            updatePlayer={updatePlayer}
-            deletePlayer={deletePlayer}
-            onEditClick={handleEditClick}
-          />
-        ))}
+        <h2>Team 1</h2>
+        <ul>
+          {team1.map((player) => (
+            <li key={player.id}>
+              {player.name} - {player.position} - {player.rating}
+            </li>
+          ))}
+        </ul>
       </div>
 
-      {isEditModalOpen && (
-        <PlayerEditModal
-          player={selectedPlayer}
-          onClose={handleCloseModal}
-          updatePlayer={updatePlayer}
-        />
-      )}
+      <div>
+        <h2>Team 2</h2>
+        <ul>
+          {team2.map((player) => (
+            <li key={player.id}>
+              {player.name} - {player.position} - {player.rating}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

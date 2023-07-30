@@ -1,100 +1,111 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-const PlayerForm = ({
-  playerData,
-  setPlayerData,
-  addPlayer,
-  generateTeams,
-}) => {
-  const [localPlayerData, setLocalPlayerData] = useState([]);
+// Your hardcoded player data
+export const playersData = [
+  {
+    id: 1,
+    name: "Player 1",
+    position: "Forward",
+    rating: 4.5,
+  },
+  {
+    id: 2,
+    name: "Player 2",
+    position: "Midfielder",
+    rating: 4.1,
+  },
+  // Add more players here
+];
 
-  useEffect(() => {
-    setLocalPlayerData(playerData);
-  }, [playerData]);
+const PlayerForm = () => {
+  const [selectedPlayers, setSelectedPlayers] = useState([]);
+  const [newPlayer, setNewPlayer] = useState({
+    name: "",
+    position: "",
+    rating: "",
+  });
 
-  const handleNameChange = (id, value) => {
-    setPlayerData((prevData) => {
-      const newPlayerData = prevData.map((player) =>
-        player.id === id ? { ...player, name: value } : player
+  const handlePlayerChange = (playerId, isChecked) => {
+    if (isChecked) {
+      setSelectedPlayers((prevSelected) => [...prevSelected, playerId]);
+    } else {
+      setSelectedPlayers((prevSelected) =>
+        prevSelected.filter((id) => id !== playerId)
       );
-      return newPlayerData;
-    });
+    }
   };
 
-  const handlePositionChange = (id, value) => {
-    setPlayerData((prevData) => {
-      const newPlayerData = prevData.map((player) =>
-        player.id === id ? { ...player, position: value } : player
-      );
-      return newPlayerData;
-    });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewPlayer((prevNewPlayer) => ({ ...prevNewPlayer, [name]: value }));
   };
 
-  const handleImageChange = (id, event) => {
-    const file = event.target.files[0];
-    setPlayerData((prevData) => {
-      const newPlayerData = prevData.map((player) =>
-        player.id === id ? { ...player, image: file } : player
-      );
-      return newPlayerData;
-    });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    // Filter out players with empty names
-    const newPlayers = localPlayerData.filter(
-      (player) => player.name.trim() !== ""
-    );
-
-    addPlayer(newPlayers); // Call the addPlayer function from the parent component
+  const handleAddPlayer = () => {
+    if (newPlayer.name && newPlayer.position && newPlayer.rating) {
+      const newPlayerWithId = {
+        ...newPlayer,
+        id: Date.now(), // Assign a unique ID to the new player
+      };
+      setSelectedPlayers((prevSelected) => [...prevSelected, newPlayerWithId]);
+      setNewPlayer({
+        name: "",
+        position: "",
+        rating: "",
+      });
+    } else {
+      alert("Please fill in all required fields to add a new player.");
+    }
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        {localPlayerData.map((player) => (
+      <h2>Add Player</h2>
+      <div>
+        {playersData.map((player) => (
           <div key={player.id}>
             <label>
-              Player Name:
               <input
-                type="text"
-                value={player.name}
-                onChange={(e) => handleNameChange(player.id, e.target.value)}
-              />
-            </label>
-            <label>
-              Player Position:
-              <input
-                type="text"
-                value={player.position}
+                type="checkbox"
+                checked={selectedPlayers.includes(player.id)}
                 onChange={(e) =>
-                  handlePositionChange(player.id, e.target.value)
+                  handlePlayerChange(player.id, e.target.checked)
                 }
               />
+              {player.name}
             </label>
-            <label>
-              Player Image:
-              <input
-                type="file"
-                onChange={(e) => handleImageChange(player.id, e)}
-              />
-            </label>
-            {player.image && (
-              <img
-                src={URL.createObjectURL(player.image)}
-                alt={player.name}
-                style={{ width: "100px", height: "100px" }}
-              />
-            )}
           </div>
         ))}
-        <button type="submit">Add Players</button>
-        <button type="button" onClick={generateTeams}>
-          Generate Teams
-        </button>
-      </form>
+      </div>
+
+      <div>
+        <h2>Add New Player</h2>
+        <input
+          type="text"
+          name="name"
+          value={newPlayer.name}
+          placeholder="Name"
+          onChange={handleInputChange}
+        />
+        <input
+          type="text"
+          name="position"
+          value={newPlayer.position}
+          placeholder="Position"
+          onChange={handleInputChange}
+        />
+        <input
+          type="number"
+          name="rating"
+          value={newPlayer.rating}
+          placeholder="Rating"
+          onChange={handleInputChange}
+        />
+        <button onClick={handleAddPlayer}>Add Player</button>
+      </div>
+
+      <button onClick={() => console.log(selectedPlayers)}>
+        Generate Teams
+      </button>
     </div>
   );
 };
