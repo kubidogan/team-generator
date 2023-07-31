@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PlayerForm from "./PlayerForm";
+import PlayerForm from "./PlayerForm"; // Make sure to import PlayerForm correctly
 
 const TeamGenerator = () => {
   const [team1, setTeam1] = useState([]);
@@ -21,8 +21,8 @@ const TeamGenerator = () => {
 
   return (
     <div>
-      <PlayerForm onPlayerSelect={handleGenerateTeams} />
-
+      <PlayerForm onPlayerSelect={handleGenerateTeams} />{" "}
+      {/* Make sure to pass the handleGenerateTeams function to PlayerForm */}
       <div>
         <h2>Team 1</h2>
         <ul>
@@ -33,7 +33,6 @@ const TeamGenerator = () => {
           ))}
         </ul>
       </div>
-
       <div>
         <h2>Team 2</h2>
         <ul>
