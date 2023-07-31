@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import PlayerForm from "./PlayerForm"; // Make sure to import PlayerForm correctly
+import PlayerForm from "./PlayerForm";
+
+const shuffleArray = (array) => {
+  const shuffledArray = array.slice();
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+  return shuffledArray;
+};
 
 const TeamGenerator = () => {
   const [team1, setTeam1] = useState([]);
@@ -8,7 +17,7 @@ const TeamGenerator = () => {
   const handleGenerateTeams = (selectedPlayers) => {
     if (selectedPlayers.length === 14) {
       // Shuffle the selectedPlayers array to randomize the order
-      const shuffledPlayers = selectedPlayers.sort(() => Math.random() - 0.5);
+      const shuffledPlayers = shuffleArray(selectedPlayers);
 
       // Divide the shuffled players array into two teams
       const teamSize = Math.ceil(shuffledPlayers.length / 2);
@@ -21,8 +30,8 @@ const TeamGenerator = () => {
 
   return (
     <div>
-      <PlayerForm onPlayerSelect={handleGenerateTeams} />{" "}
-      {/* Make sure to pass the handleGenerateTeams function to PlayerForm */}
+      <PlayerForm onPlayerSelect={handleGenerateTeams} />
+
       <div>
         <h2>Team 1</h2>
         <ul>
@@ -33,6 +42,7 @@ const TeamGenerator = () => {
           ))}
         </ul>
       </div>
+
       <div>
         <h2>Team 2</h2>
         <ul>

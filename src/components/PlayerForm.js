@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import PlayerCard from "./PlayerCard";
 import playersData from "./playersData";
 
-const PlayerForm = ({ onPlayerSelect }) => {
+const PlayerForm = () => {
   const [selectedPlayers, setSelectedPlayers] = useState([]);
   const [newPlayer, setNewPlayer] = useState({
     name: "",
@@ -11,10 +12,13 @@ const PlayerForm = ({ onPlayerSelect }) => {
 
   const handlePlayerChange = (playerId, isChecked) => {
     if (isChecked) {
-      setSelectedPlayers((prevSelected) => [...prevSelected, playerId]);
+      const selectedPlayer = playersData.find(
+        (player) => player.id === playerId
+      );
+      setSelectedPlayers((prevSelected) => [...prevSelected, selectedPlayer]);
     } else {
       setSelectedPlayers((prevSelected) =>
-        prevSelected.filter((id) => id !== playerId)
+        prevSelected.filter((player) => player.id !== playerId)
       );
     }
   };
@@ -30,10 +34,7 @@ const PlayerForm = ({ onPlayerSelect }) => {
         ...newPlayer,
         id: Date.now(), // Assign a unique ID to the new player
       };
-      setSelectedPlayers((prevSelected) => [
-        ...prevSelected,
-        newPlayerWithId.id,
-      ]);
+      setSelectedPlayers((prevSelected) => [...prevSelected, newPlayerWithId]);
       setNewPlayer({
         name: "",
         position: "",
@@ -42,11 +43,6 @@ const PlayerForm = ({ onPlayerSelect }) => {
     } else {
       alert("Please fill in all required fields to add a new player.");
     }
-  };
-
-  const handleGenerateTeams = () => {
-    // Pass the selectedPlayers array to the parent component for team generation
-    onPlayerSelect(selectedPlayers);
   };
 
   return (
@@ -58,7 +54,7 @@ const PlayerForm = ({ onPlayerSelect }) => {
             <label>
               <input
                 type="checkbox"
-                checked={selectedPlayers.includes(player.id)}
+                checked={selectedPlayers.some((p) => p.id === player.id)}
                 onChange={(e) =>
                   handlePlayerChange(player.id, e.target.checked)
                 }
@@ -69,6 +65,17 @@ const PlayerForm = ({ onPlayerSelect }) => {
         ))}
       </div>
 
+      {/* Selected Players */}
+      <div>
+        <h2>Selected Players</h2>
+        {selectedPlayers.map((player) => (
+          <div key={player.id}>
+            <PlayerCard player={player} />
+          </div>
+        ))}
+      </div>
+
+      {/* Add New Player */}
       <div>
         <h2>Add New Player</h2>
         <input
@@ -95,7 +102,9 @@ const PlayerForm = ({ onPlayerSelect }) => {
         <button onClick={handleAddPlayer}>Add Player</button>
       </div>
 
-      <button onClick={handleGenerateTeams}>Generate Teams</button>
+      <button onClick={() => console.log(selectedPlayers)}>
+        Generate Teams
+      </button>
     </div>
   );
 };

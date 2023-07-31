@@ -1,25 +1,15 @@
 import React from "react";
+import PlayerCard from "./PlayerCard";
 
-const TeamDisplay = ({ team1, team2 }) => {
+const TeamDisplay = ({ teamName, players }) => {
   return (
-    <div>
-      <h2>Team 1</h2>
-      <ul>
-        {team1.map((player) => (
-          <li key={player.id}>
-            {player.name} - {player.position} - Rating: {player.rating}
-          </li>
+    <div className="team-display">
+      <h2>{teamName}</h2>
+      <div>
+        {players.map((player) => (
+          <PlayerCard key={player.id} player={player} />
         ))}
-      </ul>
-
-      <h2>Team 2</h2>
-      <ul>
-        {team2.map((player) => (
-          <li key={player.id}>
-            {player.name} - {player.position} - Rating: {player.rating}
-          </li>
-        ))}
-      </ul>
+      </div>
     </div>
   );
 };
