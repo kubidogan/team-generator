@@ -54,36 +54,33 @@ const PlayerForm = ({ onPlayerSelect }) => {
       <h1>Football Team Generator</h1>
       <Carousel>
         <Carousel.Item>
-          <img src="/avatar.png" alt="First slide" className="d-block w-100" />
+          <video className="d-block w-100" autoPlay loop muted>
+            <source src="/carousel2.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
           <Carousel.Caption>
-            <h3>First slide label</h3>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+            <h3>B in beha stands for banger!</h3>
+            <p>Don't get too gassed, just waffling.</p>
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
           <img
-            src="/path/to/your/second/image.jpg"
+            src="/carousel1.jpg"
             alt="Second slide"
             className="d-block w-100"
           />
           <Carousel.Caption>
-            <h3>Second slide label</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <h3>Kebabs R'us</h3>
+            <p>Keeping the Turkish football alive!</p>
           </Carousel.Caption>
         </Carousel.Item>
-        <Carousel.Item>
-          <img
-            src="/path/to/your/third/image.jpg"
-            alt="Third slide"
-            className="d-block w-100"
-          />
+        {/* <Carousel.Item>
+          <img src="/villa.jpeg" alt="Third slide" className="d-block w-100" />
           <Carousel.Caption>
-            <h3>Third slide label</h3>
-            <p>
-              Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-            </p>
+            <h3>Aston Villa</h3>
+            <p>Best team innaaa de world.</p>
           </Carousel.Caption>
-        </Carousel.Item>
+        </Carousel.Item> */}
       </Carousel>
 
       <h2>Select Players</h2>
