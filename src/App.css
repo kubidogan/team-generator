@@ -1,4 +1,50 @@
-.player-card {
+.players-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center; /* Optional: Center the cards horizontally */
+}
+
+.player-card {
+  /* Your existing styles for the card */
+  width: calc(100% - 1rem);
+  max-width: 400px;
+  margin: 0.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(
+    25deg,
+    rgba(75, 53, 118, 1) 0%,
+    rgba(248, 177, 60, 1) 86%
+  );
+  text-align: center;
+}
+
+.player-card-contents {
+  display: flex !important;
+  flex-direction: row !important;
+  background: linear-gradient(
+    25deg,
+    rgba(75, 53, 118, 1) 0%,
+    rgba(248, 177, 60, 1) 86%
+  ) !important;
+}
+
+/* Add media queries for responsiveness */
+@media (min-width: 576px) {
+  .player-card {
+    width: calc(50% - 1rem);
+  }
+}
+
+@media (min-width: 768px) {
+  .player-card {
+    width: calc(33.33% - 1rem);
+  }
+}
+
+@media (min-width: 992px) {
+  .player-card {
+    width: calc(25% - 1rem);
+  }
 }

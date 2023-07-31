@@ -14,18 +14,32 @@ const PlayerForm = ({ onPlayerSelect }) => {
     rating: "",
   });
 
-  const handlePlayerChange = (playerId, isChecked) => {
-    if (isChecked) {
-      setSelectedPlayers((prevSelected) => [
-        ...prevSelected,
-        playersData.find((player) => player.id === playerId),
-      ]);
-    } else {
-      setSelectedPlayers((prevSelected) =>
-        prevSelected.filter((player) => player.id !== playerId)
-      );
-    }
+  const handlePlayerChange = (playerId) => {
+    setSelectedPlayers((prevSelected) => {
+      if (prevSelected.some((p) => p.id === playerId)) {
+        // If the player is already selected, remove it from the list
+        return prevSelected.filter((player) => player.id !== playerId);
+      } else {
+        // If the player is not selected, add it to the list
+        return [
+          ...prevSelected,
+          playersData.find((player) => player.id === playerId),
+        ];
+      }
+    });
   };
+  // const handlePlayerChange = (playerId, isChecked) => {
+  //   if (isChecked) {
+  //     setSelectedPlayers((prevSelected) => [
+  //       ...prevSelected,
+  //       playersData.find((player) => player.id === playerId),
+  //     ]);
+  //   } else {
+  //     setSelectedPlayers((prevSelected) =>
+  //       prevSelected.filter((player) => player.id !== playerId)
+  //     );
+  //   }
+  // };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -50,9 +64,9 @@ const PlayerForm = ({ onPlayerSelect }) => {
   };
 
   return (
-    <div className="player-card">
+    <div className="players-container">
       <h1>Football Team Generator</h1>
-      <Carousel>
+      {/* <Carousel>
         <Carousel.Item>
           <video className="d-block w-100" autoPlay loop muted>
             <source src="/carousel2.mp4" type="video/mp4" />
@@ -74,18 +88,51 @@ const PlayerForm = ({ onPlayerSelect }) => {
             <p>Keeping the Turkish football alive!</p>
           </Carousel.Caption>
         </Carousel.Item>
-        {/* <Carousel.Item>
+        <Carousel.Item>
           <img src="/villa.jpeg" alt="Third slide" className="d-block w-100" />
           <Carousel.Caption>
             <h3>Aston Villa</h3>
             <p>Best team innaaa de world.</p>
           </Carousel.Caption>
-        </Carousel.Item> */}
+        </Carousel.Item>
+      </Carousel> */}
+
+      <Carousel>
+        {playersData.map((player) => (
+          <Carousel.Item key={player.id}>
+            <div className="player-card">
+              <Card style={{ width: "18rem" }} className="player-card-contents">
+                <Card.Img src={player.avatar} style={{ width: "150px" }} />
+                <Card.Body>
+                  <Card.Title>{player.name}</Card.Title>
+                  <Card.Text>
+                    {player.position} - {player.rating}{" "}
+                    {Array.from({ length: player.rating }).map((_, index) => (
+                      <FontAwesomeIcon key={index} icon={faStar} />
+                    ))}
+                  </Card.Text>
+                  <Button
+                    variant={
+                      selectedPlayers.some((p) => p.id === player.id)
+                        ? "secondary"
+                        : "primary"
+                    }
+                    onClick={() => handlePlayerChange(player.id)}
+                  >
+                    {selectedPlayers.some((p) => p.id === player.id)
+                      ? "Selected"
+                      : "Select"}
+                  </Button>
+                </Card.Body>
+              </Card>
+            </div>
+          </Carousel.Item>
+        ))}
       </Carousel>
 
-      <h2>Select Players</h2>
+      <h2 className="player-title">Select Players</h2>
       {playersData.map((player) => (
-        <div key={player.id}>
+        <div key={player.id} className="player-card">
           <Card style={{ width: "18rem" }} className="player-card-contents">
             <Card.Img src={player.avatar} style={{ width: "150px" }} />{" "}
             {/* Add 'src' attribute here */}
@@ -97,14 +144,26 @@ const PlayerForm = ({ onPlayerSelect }) => {
                   <FontAwesomeIcon key={index} icon={faStar} />
                 ))}
               </Card.Text>
-              <input
+              {/* <input
                 type="checkbox"
                 checked={selectedPlayers.some((p) => p.id === player.id)}
                 onChange={(e) =>
                   handlePlayerChange(player.id, e.target.checked)
                 }
-              />
-              <Button variant="primary">Stats</Button>
+              /> */}
+              <Button
+                variant={
+                  selectedPlayers.some((p) => p.id === player.id)
+                    ? "secondary"
+                    : "primary"
+                }
+                onClick={() => handlePlayerChange(player.id)}
+                className="btn btn-success"
+              >
+                {selectedPlayers.some((p) => p.id === player.id)
+                  ? "Selected"
+                  : "Select"}
+              </Button>
             </Card.Body>
           </Card>
         </div>

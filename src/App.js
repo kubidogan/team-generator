@@ -4,6 +4,8 @@ import "./App.css";
 import PlayerForm from "./components/PlayerForm";
 import TeamGenerator from "./components/TeamGenerator";
 import "bootstrap/dist/css/bootstrap.min.css";
+import PlayerCard from "./components/PlayerCard";
+import "./components/Card.css";
 
 export default function App() {
   const [team1Players, setTeam1Players] = useState([]);
@@ -21,8 +23,14 @@ export default function App() {
 
   return (
     <div className="App">
-      <PlayerForm onPlayerSelect={handlePlayerSelect} />
-      <TeamGenerator team1Players={team1Players} team2Players={team2Players} />
+      <div className="containe">
+        <PlayerForm onPlayerSelect={handlePlayerSelect} />
+        <TeamGenerator
+          team1Players={team1Players}
+          team2Players={team2Players}
+        />
+        <PlayerCard />
+      </div>
     </div>
   );
 }
