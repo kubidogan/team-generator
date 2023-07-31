@@ -30,7 +30,10 @@ const PlayerForm = ({ onPlayerSelect }) => {
         ...newPlayer,
         id: Date.now(), // Assign a unique ID to the new player
       };
-      setSelectedPlayers((prevSelected) => [...prevSelected, newPlayerWithId]);
+      setSelectedPlayers((prevSelected) => [
+        ...prevSelected,
+        newPlayerWithId.id,
+      ]);
       setNewPlayer({
         name: "",
         position: "",
@@ -39,6 +42,11 @@ const PlayerForm = ({ onPlayerSelect }) => {
     } else {
       alert("Please fill in all required fields to add a new player.");
     }
+  };
+
+  const handleGenerateTeams = () => {
+    // Pass the selectedPlayers array to the parent component for team generation
+    onPlayerSelect(selectedPlayers);
   };
 
   return (
@@ -60,29 +68,6 @@ const PlayerForm = ({ onPlayerSelect }) => {
           </div>
         ))}
       </div>
-
-      {selectedPlayers.length > 0 && (
-        <div>
-          <h2>Selected Players</h2>
-          {selectedPlayers.map((playerId) => {
-            const player = playersData.find((p) => p.id === playerId);
-            return (
-              <div key={player.id}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={true}
-                    onChange={(e) =>
-                      handlePlayerChange(player.id, e.target.checked)
-                    }
-                  />
-                  {player.name}
-                </label>
-              </div>
-            );
-          })}
-        </div>
-      )}
 
       <div>
         <h2>Add New Player</h2>
@@ -110,9 +95,7 @@ const PlayerForm = ({ onPlayerSelect }) => {
         <button onClick={handleAddPlayer}>Add Player</button>
       </div>
 
-      <button onClick={() => onPlayerSelect(selectedPlayers)}>
-        Generate Teams
-      </button>
+      <button onClick={handleGenerateTeams}>Generate Teams</button>
     </div>
   );
 };
