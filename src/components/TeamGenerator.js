@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PlayerForm, { playersData } from "./PlayerForm";
+import PlayerForm from "./PlayerForm";
 
 const TeamGenerator = () => {
   const [team1, setTeam1] = useState([]);

@@ -1,24 +1,8 @@
 import React, { useState } from "react";
+import playersData from "./playersData";
 
-// Your hardcoded player data
-export const playersData = [
-  {
-    id: 1,
-    name: "Player 1",
-    position: "Forward",
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    name: "Player 2",
-    position: "Midfielder",
-    rating: 4.1,
-  },
-  // Add more players here
-];
-
-const PlayerForm = () => {
-  const [selectedPlayers, setSelectedPlayers] = useState([]);
+const PlayerForm = ({ onPlayerSelect }) => {
+  const [selectedPlayerIds, setSelectedPlayerIds] = useState([]);
   const [newPlayer, setNewPlayer] = useState({
     name: "",
     position: "",
@@ -27,10 +11,10 @@ const PlayerForm = () => {
 
   const handlePlayerChange = (playerId, isChecked) => {
     if (isChecked) {
-      setSelectedPlayers((prevSelected) => [...prevSelected, playerId]);
+      setSelectedPlayerIds((prevSelectedIds) => [...prevSelectedIds, playerId]);
     } else {
-      setSelectedPlayers((prevSelected) =>
-        prevSelected.filter((id) => id !== playerId)
+      setSelectedPlayerIds((prevSelectedIds) =>
+        prevSelectedIds.filter((id) => id !== playerId)
       );
     }
   };
@@ -46,7 +30,10 @@ const PlayerForm = () => {
         ...newPlayer,
         id: Date.now(), // Assign a unique ID to the new player
       };
-      setSelectedPlayers((prevSelected) => [...prevSelected, newPlayerWithId]);
+      setSelectedPlayerIds((prevSelectedIds) => [
+        ...prevSelectedIds,
+        newPlayerWithId.id,
+      ]);
       setNewPlayer({
         name: "",
         position: "",
@@ -57,16 +44,24 @@ const PlayerForm = () => {
     }
   };
 
+  // Combine playersData and selected players into a single array
+  const allPlayers = [
+    ...playersData,
+    ...selectedPlayerIds.map((id) =>
+      playersData.find((player) => player.id === id)
+    ),
+  ];
+
   return (
     <div>
       <h2>Add Player</h2>
       <div>
-        {playersData.map((player) => (
+        {allPlayers.map((player) => (
           <div key={player.id}>
             <label>
               <input
                 type="checkbox"
-                checked={selectedPlayers.includes(player.id)}
+                checked={selectedPlayerIds.includes(player.id)}
                 onChange={(e) =>
                   handlePlayerChange(player.id, e.target.checked)
                 }
@@ -103,7 +98,7 @@ const PlayerForm = () => {
         <button onClick={handleAddPlayer}>Add Player</button>
       </div>
 
-      <button onClick={() => console.log(selectedPlayers)}>
+      <button onClick={() => console.log(selectedPlayerIds)}>
         Generate Teams
       </button>
     </div>
