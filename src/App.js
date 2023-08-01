@@ -23,7 +23,7 @@ export default function App() {
 
   return (
     <div className="App">
-      <div className="containe">
+      <div className="container">
         <PlayerForm onPlayerSelect={handlePlayerSelect} />
         <TeamGenerator
           team1Players={team1Players}

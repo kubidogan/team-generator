@@ -169,7 +169,7 @@ const PlayerForm = ({ onPlayerSelect }) => {
         </div>
       ))}
 
-      <div>
+      <div className="add__player">
         <h2>Add New Player</h2>
         <input
           type="text"
@@ -195,8 +195,8 @@ const PlayerForm = ({ onPlayerSelect }) => {
         <button onClick={handleAddPlayer}>Add Player</button>
       </div>
 
-      <h2>Selected Players</h2>
-      <div>
+      <div id="selected__players">
+        <h2>Selected Players</h2>
         {selectedPlayers.map((player) => (
           <div key={player.id}>
             <span>{player.name}</span>
