@@ -22,12 +22,17 @@
 }
 
 .App {
+  text-align: center;
+}
+
+body {
   background: linear-gradient(
     25deg,
     rgba(75, 53, 118, 1) 0%,
     rgba(248, 177, 60, 1) 86%
   );
-  text-align: center;
+  padding: 0px;
+  margin: 0px;
 }
 
 .player-card-contents {
@@ -40,14 +45,14 @@
   ) !important;
 }
 
-.add__player {
+/* .add__player {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-}
+} */
 
 /* Add media queries for responsiveness */
-@media (min-width: 576px) {
+/* @media (min-width: 576px) {
   .player-card {
     width: calc(50% - 1rem);
   }
@@ -63,4 +68,4 @@
   .player-card {
     width: calc(25% - 1rem);
   }
-}
+} */
