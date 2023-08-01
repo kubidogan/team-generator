@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import playersData from "./playersData";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import Carousel from "react-bootstrap/Carousel";
+import ListGroup from "react-bootstrap/ListGroup";
+import Form from "react-bootstrap/Form";
+import ProgressBar from "react-bootstrap/ProgressBar";
 
 const PlayerForm = ({ onPlayerSelect }) => {
   const [selectedPlayers, setSelectedPlayers] = useState([]);
@@ -13,6 +16,8 @@ const PlayerForm = ({ onPlayerSelect }) => {
     position: "",
     rating: "",
   });
+
+  const [selectedCount, setSelectedCount] = useState(0);
 
   const handlePlayerChange = (playerId) => {
     setSelectedPlayers((prevSelected) => {
@@ -28,6 +33,10 @@ const PlayerForm = ({ onPlayerSelect }) => {
       }
     });
   };
+
+  useEffect(() => {
+    setSelectedCount(selectedPlayers.length);
+  }, [selectedPlayers]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -55,6 +64,9 @@ const PlayerForm = ({ onPlayerSelect }) => {
     <div className="players-container">
       <div className="players__carousel">
         <h1>Football Team Generator</h1>
+        <h2>Selected Players ({selectedCount})</h2>
+        <ProgressBar animated now={45} />
+        <ProgressBar striped variant="success" now={35} key={1} />
         <h2>Select Players</h2>
         <Carousel>
           {playersData.map((player) => (
@@ -92,10 +104,7 @@ const PlayerForm = ({ onPlayerSelect }) => {
           ))}
         </Carousel>
       </div>
-
-      <div className="add__player">
-        <h2>Add New Player</h2>
-        <input
+      {/* <input
           type="text"
           name="name"
           value={newPlayer.name}
@@ -116,10 +125,39 @@ const PlayerForm = ({ onPlayerSelect }) => {
           placeholder="Rating"
           onChange={handleInputChange}
         />
-        <button onClick={handleAddPlayer}>Add Player</button>
+        <button onClick={handleAddPlayer}>Add Player</button> */}
+      <div className="add__player">
+        <h2>Add New Player</h2>
+        <Form.Control
+          size="sm"
+          type="text"
+          name="name"
+          value={newPlayer.name}
+          placeholder="Name"
+          onChange={handleInputChange}
+        />
+
+        <Form.Control
+          type="text"
+          name="position"
+          value={newPlayer.position}
+          placeholder="Position"
+          onChange={handleInputChange}
+        />
+
+        <Form.Control
+          type="number"
+          name="rating"
+          value={newPlayer.rating}
+          placeholder="Rating"
+          onChange={handleInputChange}
+        />
+        <button onClick={handleAddPlayer} className="btn btn-warning">
+          Add Player
+        </button>
       </div>
 
-      <div className="selected__player">
+      {/* <div className="selected__player">
         <h2>Selected Players</h2>
         {selectedPlayers.map((player) => (
           <div key={player.id}>
@@ -128,11 +166,24 @@ const PlayerForm = ({ onPlayerSelect }) => {
             <span>{player.rating}</span>
           </div>
         ))}
+      </div> */}
+      <div className="selected__players">
+        {selectedPlayers.map((player) => (
+          <ListGroup>
+            {/* <ListGroup.Item as="li">{player.id}</ListGroup.Item> */}
+            <ListGroup.Item>{player.name}</ListGroup.Item>
+            {/* <ListGroup.Item as="li">{player.position}</ListGroup.Item>
+            <ListGroup.Item as="li">{player.rating}</ListGroup.Item> */}
+          </ListGroup>
+        ))}
+        ;
+        <button
+          onClick={() => onPlayerSelect(selectedPlayers)}
+          className="btn btn-dark"
+        >
+          Generate Teams
+        </button>
       </div>
-
-      <button onClick={() => onPlayerSelect(selectedPlayers)}>
-        Generate Teams
-      </button>
     </div>
   );
 };

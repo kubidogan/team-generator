@@ -40,6 +40,12 @@
   ) !important;
 }
 
+.add__player {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 /* Add media queries for responsiveness */
 @media (min-width: 576px) {
   .player-card {
