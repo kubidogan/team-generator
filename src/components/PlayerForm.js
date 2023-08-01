@@ -53,40 +53,45 @@ const PlayerForm = ({ onPlayerSelect }) => {
 
   return (
     <div className="players-container">
-      <h1>Football Team Generator</h1>
-      <Carousel>
-        <h2 className="player-title">Select Players</h2>
-        {playersData.map((player) => (
-          <Carousel.Item key={player.id}>
-            <div className="player-card">
-              <Card style={{ width: "18rem" }} className="player-card-contents">
-                <Card.Img src={player.avatar} style={{ width: "150px" }} />
-                <Card.Body>
-                  <Card.Title>{player.name}</Card.Title>
-                  <Card.Text>
-                    {player.position} - {player.rating}{" "}
-                    {Array.from({ length: player.rating }).map((_, index) => (
-                      <FontAwesomeIcon key={index} icon={faStar} />
-                    ))}
-                  </Card.Text>
-                  <Button
-                    variant={
-                      selectedPlayers.some((p) => p.id === player.id)
-                        ? "secondary"
-                        : "primary"
-                    }
-                    onClick={() => handlePlayerChange(player.id)}
-                  >
-                    {selectedPlayers.some((p) => p.id === player.id)
-                      ? "Selected"
-                      : "Select"}
-                  </Button>
-                </Card.Body>
-              </Card>
-            </div>
-          </Carousel.Item>
-        ))}
-      </Carousel>
+      <div className="players__carousel">
+        <h1>Football Team Generator</h1>
+        <h2>Select Players</h2>
+        <Carousel>
+          {playersData.map((player) => (
+            <Carousel.Item key={player.id}>
+              <div className="player-card">
+                <Card
+                  style={{ width: "18rem" }}
+                  className="player-card-contents"
+                >
+                  <Card.Img src={player.avatar} style={{ width: "150px" }} />
+                  <Card.Body>
+                    <Card.Title>{player.name}</Card.Title>
+                    <Card.Text>
+                      {player.position} - {player.rating}{" "}
+                      {Array.from({ length: player.rating }).map((_, index) => (
+                        <FontAwesomeIcon key={index} icon={faStar} />
+                      ))}
+                    </Card.Text>
+                    <Button
+                      variant={
+                        selectedPlayers.some((p) => p.id === player.id)
+                          ? "secondary"
+                          : "primary"
+                      }
+                      onClick={() => handlePlayerChange(player.id)}
+                    >
+                      {selectedPlayers.some((p) => p.id === player.id)
+                        ? "Selected"
+                        : "Select"}
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </div>
+            </Carousel.Item>
+          ))}
+        </Carousel>
+      </div>
 
       <div className="add__player">
         <h2>Add New Player</h2>
